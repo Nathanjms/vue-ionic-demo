@@ -14,10 +14,9 @@ import {
   IonCol,
   IonImg,
 } from "@ionic/vue";
+import { usePhotoGallery } from "@/composables/usePhotoGallery";
 
-function takePhoto() {
-  alert("todo");
-}
+const { takePhoto } = usePhotoGallery();
 </script>
 
 <template>
