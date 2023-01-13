@@ -1,7 +1,7 @@
 # Ionic Vue
 
 Ensure the ionic cli is installed. If not, run
-```bash
+```shell
 npm install -g @ionic/cli@latest native-run
 ```
 
@@ -12,13 +12,13 @@ Run `ionic serve` to run the ionic app in the web browser.
 
 Complete a fresh build of the Ionic project, fixing any errors that it reports:
 
-```bash
+```shell
 ionic build
 ```
 
 Next, create both the iOS and Android projects:
 
-```bash
+```shell
 ionic cap add ios
 ionic cap add android
 ```
@@ -38,3 +38,11 @@ ionic cap sync
 ```
 
 For further details see [the documentation page](https://ionicframework.com/docs/vue/your-first-app/deploying-mobile).
+
+### Live Reloading for iOS/Android
+
+```shell
+$ ionic cap run ios -l --external
+
+$ ionic cap run android -l --external
+```
