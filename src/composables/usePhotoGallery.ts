@@ -9,7 +9,11 @@ export interface UserPhoto {
 }
 
 export const usePhotoGallery = () => {
+  const PHOTO_STORAGE = "photos";
   const photos = ref<UserPhoto[]>([]);
+
+  onMounted(loadSaved);
+  watch(photos, cachePhotos);
 
   const takePhoto = async () => {
     const photo = await Camera.getPhoto({
@@ -28,6 +32,28 @@ export const usePhotoGallery = () => {
     takePhoto,
     photos,
   };
+
+  function cachePhotos() {
+    Preferences.set({
+      key: PHOTO_STORAGE,
+      value: JSON.stringify(photos.value),
+    });
+  }
+
+  async function loadSaved() {
+    const photoList = await Preferences.get({ key: PHOTO_STORAGE });
+    const photosInPreferences = photoList.value ? JSON.parse(photoList.value) : [];
+
+    for (const photo of photosInPreferences) {
+      const file = await Filesystem.readFile({
+        path: photo.filepath,
+        directory: Directory.Data,
+      });
+      photo.webviewPath = `data:image/jpeg;base64,${file.data}`;
+    }
+
+    photos.value = photosInPreferences;
+  }
 };
 
 async function savePicture(photo: Photo, fileName: string): Promise<UserPhoto> {
